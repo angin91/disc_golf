@@ -1,6 +1,6 @@
 import 'package:disc_golf/AddScore.dart';
 import 'package:disc_golf/CustomButton.dart';
-import 'Player.dart';
+import 'databaseHelper.dart';
 import 'package:flutter/material.dart';
 
 class ChooseHole extends StatefulWidget {

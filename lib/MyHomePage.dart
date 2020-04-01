@@ -1,5 +1,5 @@
 import 'package:disc_golf/ChooseHole.dart';
-import 'package:disc_golf/Player.dart';
+import 'package:disc_golf/databaseHelper.dart';
 import 'package:disc_golf/ScoreTable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,21 +20,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _setupPlayerList().then((playerList) {
+      setState(() {
+        players = playerList;
+      });
+    });
     return Scaffold(
-//      backgroundColor: Color(0xff330099),
         appBar: AppBar(
           title: Text(widget.title, style: TextStyle(color: Colors.white)),
           backgroundColor: Color(0xFF0D47A1),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                setState(() {
-                  _showAddPlayerDialog(context);
-                });
-              },
-            )
-          ],
         ),
         body: Column(
           children: <Widget>[
@@ -83,10 +77,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   }),
             )
           ],
-        ));
+        ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showAddPlayerDialog(context),
+        backgroundColor: Color(0xFF0D47A1),
+        child: Icon(Icons.add),
+      ),
+    );
   }
 
-  Player _createPlayer(String name) {
+  Future<List<Player>> _setupPlayerList() async{
+    DatabaseHelper helper = DatabaseHelper.instance;
+    return await helper.queryAllPlayers();
+  }
+
+  _createPlayer(String name) async {
     var player = Player();
     player.name = name;
     player.scoreOne = 0;
@@ -107,6 +113,9 @@ class _MyHomePageState extends State<MyHomePage> {
     player.scoreSixteen = 0;
     player.scoreSeventeen = 0;
     player.scoreEighteen = 0;
+    DatabaseHelper helper = DatabaseHelper.instance;
+    int id = await helper.insert(player);
+    player.id = id;
     setState(() {
       players.add(player);
     });
@@ -182,7 +191,10 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     Widget yesButton = FlatButton(
       child: Text("Yes"),
-      onPressed:  () {
+      onPressed:  () async {
+        Player player = players[index];
+        DatabaseHelper helper = DatabaseHelper.instance;
+        await helper.deletePlayer(player.id);
         setState(() {
           players.removeAt(index);
         });

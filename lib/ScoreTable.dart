@@ -1,5 +1,5 @@
 import 'package:disc_golf/CustomBox.dart';
-import 'Player.dart';
+import 'databaseHelper.dart';
 import 'package:flutter/material.dart';
 
 class ScoreTable extends StatelessWidget {

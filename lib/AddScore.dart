@@ -1,5 +1,5 @@
 import 'package:disc_golf/CustomButton.dart';
-import 'Player.dart';
+import 'databaseHelper.dart';
 import 'package:flutter/material.dart';
 
 class AddScore extends StatefulWidget {
@@ -45,7 +45,7 @@ class _AddScoreState extends State<AddScore> {
     );
   }
 
-  _addScore(int score){
+  _addScore(int score) async {
     setState(() {
       switch(widget.hole){
         case 1:
@@ -104,5 +104,8 @@ class _AddScoreState extends State<AddScore> {
           break;
       }
     });
+
+    DatabaseHelper helper = DatabaseHelper.instance;
+    await helper.updatePlayer(widget.player);
   }
 }
