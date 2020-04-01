@@ -1,9 +1,8 @@
 import 'package:disc_golf/ChooseHole.dart';
 import 'package:disc_golf/databaseHelper.dart';
-import 'package:disc_golf/ScoreTable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'ScoreTable.dart';
+import 'package:flutter/services.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -20,6 +19,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]);
     _setupPlayerList().then((playerList) {
       setState(() {
         players = playerList;
