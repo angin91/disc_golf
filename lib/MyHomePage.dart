@@ -26,59 +26,90 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     });
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title, style: TextStyle(color: Colors.white)),
-          backgroundColor: Color(0xFF0D47A1),
-        ),
-        body: Column(
-          children: <Widget>[
-            Flexible(
-              child: ListView.builder(
-                  itemCount: players.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () => _addScore(index),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [const Color(0xFF0D47A1), const Color(0xFF2196F3) ])
-                            ),
-                            height: 50,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Center(
-                                      child: Text(
-                                    _playersName(players[index]),
-                                    style: TextStyle(color: Colors.white),
-                                  )),
-                                ),
-                                Container(
-                                  child: FlatButton(
-                                    child: IconButton(
-                                      icon: Icon(Icons.remove_circle),
-                                      onPressed: () {
-                                        _showRemovePlayerDialog(context, index);
-                                      },
+      appBar: AppBar(
+        title: Text(widget.title, style: TextStyle(color: Colors.white)),
+        backgroundColor: Color(0xFF0D47A1),
+      ),
+      body: Column(
+        children: <Widget>[
+          Flexible(
+            child: ListView.separated(
+                separatorBuilder: (BuildContext context, int index){
+                  return SizedBox(height: 30,);
+                },
+                padding: EdgeInsets.all(20),
+                itemCount: players.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () => _addScore(index),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFF2196F3),
+                              blurRadius: 10.0,
+                              // has the effect of softening the shadow
+                              spreadRadius: 2.0,
+                              // has the effect of extending the shadow
+                              offset: Offset(
+                                1.0,
+                                1.0,
+                              ),
+                            )
+                          ],
+                          gradient: LinearGradient(colors: [
+                            const Color(0xFF0D47A1),
+                            const Color(0xFF2196F3)
+                          ])),
+                      height: 100,
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Text(
+                                _playersName(players[index]),
+                                style: TextStyle(color: Colors.white, fontSize: 25),
+                              ),
+                              Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      "Total score:",
+                                      style: TextStyle(color: Colors.white, fontSize: 20),
                                     ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        ScoreTable(
-                          player: players[index],
-                        )
-                      ],
-                    );
-                  }),
-            )
-          ],
-        ),
+                                    Text(
+                                      _playersTotalScore(players[index]).toString(),
+                                      style: TextStyle(color: Colors.white, fontSize: 40),
+                                    ),
+                                  ],
+                                ),
+                              ),
 
+                              FlatButton(
+                                child: IconButton(
+                                  icon: Icon(Icons.remove_circle),
+                                  onPressed: () {
+                                    _showRemovePlayerDialog(context, index);
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }),
+          )
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddPlayerDialog(context),
         backgroundColor: Color(0xFF0D47A1),
@@ -87,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future<List<Player>> _setupPlayerList() async{
+  Future<List<Player>> _setupPlayerList() async {
     DatabaseHelper helper = DatabaseHelper.instance;
     return await helper.queryAllPlayers();
   }
@@ -136,8 +167,28 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _showAddPlayerDialog(BuildContext context) {
+  int _playersTotalScore(Player player){
+    return player.scoreOne +
+        player.scoreTwo +
+        player.scoreThree +
+        player.scoreFour +
+        player.scoreFive +
+        player.scoreSix +
+        player.scoreSeven +
+        player.scoreEight +
+        player.scoreNine +
+        player.scoreTen +
+        player.scoreEleven +
+        player.scoreTwelve +
+        player.scoreThirteen +
+        player.scoreFourteen +
+        player.scoreFifteen +
+        player.scoreSixteen +
+        player.scoreSeventeen +
+        player.scoreEighteen;
+  }
 
+  _showAddPlayerDialog(BuildContext context) {
     Widget okButton = FlatButton(
       onPressed: () {
         _createPlayer(controller.text);
@@ -158,17 +209,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     // set up the AlertDialog
-    AlertDialog addPlayerAlert =  AlertDialog(
+    AlertDialog addPlayerAlert = AlertDialog(
       title: Text("Add player"),
       content: TextField(
         controller: controller,
         decoration: InputDecoration(helperText: "Enter name"),
         maxLines: 1,
       ),
-      actions: <Widget>[
-        okButton,
-        cancelButton
-      ],
+      actions: <Widget>[okButton, cancelButton],
     );
 
     // show the dialog
@@ -181,17 +229,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _showRemovePlayerDialog(BuildContext context, int index) {
-
     // set up the buttons
     Widget noButton = FlatButton(
       child: Text("No"),
-      onPressed:  () {
+      onPressed: () {
         Navigator.pop(context);
       },
     );
     Widget yesButton = FlatButton(
       child: Text("Yes"),
-      onPressed:  () async {
+      onPressed: () async {
         Player player = players[index];
         DatabaseHelper helper = DatabaseHelper.instance;
         await helper.deletePlayer(player.id);

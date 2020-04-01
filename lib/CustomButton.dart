@@ -20,9 +20,6 @@ class CustomButton extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              SizedBox(
-                height: height,
-              ),
               Text(
                 buttonName,
                 style: TextStyle(color: Colors.white),
@@ -32,7 +29,7 @@ class CustomButton extends StatelessWidget {
         ),
         onPressed: onPressed,
         shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.all(Radius.circular(18.0)),
+          borderRadius: new BorderRadius.all(Radius.circular(2000.0)),
           side: BorderSide(color: Colors.red)
         ),
       ),

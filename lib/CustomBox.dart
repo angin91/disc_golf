@@ -7,13 +7,11 @@ class CustomBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.black)
-        ),
-        child: Center(child: Text(text)),
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.black)
       ),
+      child: Center(child: Text(text)),
     );
   }
 }

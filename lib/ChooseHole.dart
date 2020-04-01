@@ -20,7 +20,7 @@ class _ChooseHoleState extends State<ChooseHole> {
     return Scaffold(
 //      backgroundColor: Color(0xff330099),
       appBar: AppBar(
-        title: Text("Hole", style: TextStyle(color: Colors.white)),
+        title: Text("Holes", style: TextStyle(color: Colors.white)),
         backgroundColor: Color(0xFF0D47A1),
       ),
       body: Center(
