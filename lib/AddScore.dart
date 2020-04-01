@@ -24,6 +24,7 @@ class _AddScoreState extends State<AddScore> {
         ),
         body: Center(
           child: GridView.count(
+            padding: EdgeInsets.all(5),
             crossAxisCount: (orientation == Orientation.portrait) ? 3 : 4,
             mainAxisSpacing: 4.0,
             crossAxisSpacing: 4.0,

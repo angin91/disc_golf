@@ -38,7 +38,7 @@ class CustomButton extends StatelessWidget {
                     ],
                     gradient: LinearGradient(colors: [
                       const Color(0xFF0D47A1),
-                      const Color(0xFF2196F3)
+                      const Color(0xFF1976D2)
                     ])
                 ),
               ),
@@ -49,12 +49,12 @@ class CustomButton extends StatelessWidget {
                       border: Border.all(color: Colors.blue[200], width: 1.0, style: BorderStyle.solid),
                       gradient: LinearGradient(colors: [
                         score == 0 || score == null ? const Color(0xFF0D47A1) : const Color(0xFF00796B),
-                        score == 0 || score == null ? const Color(0xFF2196F3) : const Color(0xFF29A69A)
+                        score == 0 || score == null ? const Color(0xFF1976D2) : const Color(0xFF29A69A)
                       ])),
                   child: Center(
                     child: new Text(
                       buttonName,
-                      style: TextStyle(color: Colors.white, fontSize: 50),
+                      style: TextStyle(color: Colors.white, fontSize: 60),
                     ),
                   ),
                 ),
@@ -66,7 +66,7 @@ class CustomButton extends StatelessWidget {
               CircularText(
                 text: score != null ? Text("Current score: " + score.toString(),
                   style: TextStyle(
-                    fontSize: 25
+                    fontSize: 28
                   ),
                 ): Text(""),
                 position: CircularTextPosition.inside,
