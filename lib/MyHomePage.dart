@@ -19,6 +19,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown
@@ -30,6 +31,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              _showRemoveAll(context);
+            },
+          ),
+        ],
         title: Text(widget.title, style: TextStyle(color: Colors.white)),
         backgroundColor: Color(0xFF0D47A1),
       ),
@@ -40,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 separatorBuilder: (BuildContext context, int index){
                   return SizedBox(height: 30,);
                 },
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(screenWidth*0.05),
                 itemCount: players.length,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
@@ -74,9 +83,13 @@ class _MyHomePageState extends State<MyHomePage> {
                               SizedBox(
                                 width: 30,
                               ),
-                              Text(
-                                _playersName(players[index]),
-                                style: TextStyle(color: Colors.white, fontSize: 25),
+                              Container(
+                                width: screenWidth * 0.3,
+                                child: Text(
+                                  _playersName(players[index]),
+                                  style: TextStyle(color: Colors.white, fontSize: 25),
+                                  textAlign: TextAlign.left,
+                                ),
                               ),
                               Spacer(),
                               Padding(
@@ -94,7 +107,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ],
                                 ),
                               ),
-
                               FlatButton(
                                 child: IconButton(
                                   icon: Icon(Icons.remove_circle),
@@ -227,6 +239,45 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       builder: (BuildContext context) {
         return addPlayerAlert;
+      },
+    );
+  }
+
+  _showRemoveAll(BuildContext context) {
+    // set up the buttons
+    Widget noButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget yesButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () async {
+        DatabaseHelper helper = DatabaseHelper.instance;
+        await helper.queryClearDatabase();
+        setState(() {
+          players.clear();
+        });
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog removePlayerAlert = AlertDialog(
+      title: Text("Remove all players"),
+      content: Text("Would you like to remove all player?"),
+      actions: [
+        yesButton,
+        noButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return removePlayerAlert;
       },
     );
   }
