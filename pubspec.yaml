@@ -26,6 +26,7 @@ dependencies:
   sqflite: ^1.0.0
   path_provider: ^0.4.1
   flutter_circular_text: ^0.2.0
+  flutter_email_sender: ^3.0.1
 
 dev_dependencies:
   flutter_test:

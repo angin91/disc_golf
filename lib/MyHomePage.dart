@@ -3,6 +3,7 @@ import 'package:disc_golf/databaseHelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -38,6 +39,12 @@ class _MyHomePageState extends State<MyHomePage> {
               _showRemoveAll(context);
             },
           ),
+          IconButton(
+            icon: Icon(Icons.mail),
+            onPressed: () {
+              _sendEmail(players);
+            },
+          ),
         ],
         title: Text(widget.title, style: TextStyle(color: Colors.white)),
         backgroundColor: Color(0xFF0D47A1),
@@ -52,7 +59,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: EdgeInsets.all(screenWidth*0.05),
                 itemCount: players.length,
                 itemBuilder: (BuildContext context, int index) {
+                  Player p = players[index];
                   return GestureDetector(
+                    onLongPress: () => _showRemovePlayerDialog(context, index),
                     onTap: () => _addScore(index),
                     child: Container(
                       decoration: BoxDecoration(
@@ -75,49 +84,43 @@ class _MyHomePageState extends State<MyHomePage> {
                             const Color(0xFF2196F3)
                           ])),
                       height: 100,
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              SizedBox(
-                                width: 30,
-                              ),
-                              Container(
-                                width: screenWidth * 0.3,
-                                child: Text(
-                                  _playersName(players[index]),
-                                  style: TextStyle(color: Colors.white, fontSize: 25),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                              Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Text(
-                                      "Total score:",
+                      child: LayoutBuilder(
+                        builder: (BuildContext context, BoxConstraints constraints){
+                        return Column(
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.only(left: 20),
+                                    width: constraints.maxWidth * 0.6,
+                                    child: Text(
+                                      _playersName(players[index]),
                                       style: TextStyle(color: Colors.white, fontSize: 20),
+                                      textAlign: TextAlign.left,
                                     ),
-                                    Text(
-                                      _playersTotalScore(players[index]).toString(),
-                                      style: TextStyle(color: Colors.white, fontSize: 40),
-                                    ),
-                                  ],
+                                  ),
+                                Spacer(),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 18.0, right: 20),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text(
+                                        "Total score:",
+                                        style: TextStyle(color: Colors.white, fontSize: 20),
+                                      ),
+                                      Text(
+                                        _playersTotalScore(players[index]).toString(),
+                                        style: TextStyle(color: Colors.white, fontSize: 40),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              FlatButton(
-                                child: IconButton(
-                                  icon: Icon(Icons.remove_circle),
-                                  onPressed: () {
-                                    _showRemovePlayerDialog(context, index);
-                                  },
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        );
+                        },
                       ),
                     ),
                   );
@@ -201,6 +204,12 @@ class _MyHomePageState extends State<MyHomePage> {
         player.scoreSixteen +
         player.scoreSeventeen +
         player.scoreEighteen;
+  }
+
+  _removePlayer(index) async {
+    setState(() {
+      players.removeAt(index);
+    });
   }
 
   _showAddPlayerDialog(BuildContext context) {
@@ -299,6 +308,10 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           players.removeAt(index);
         });
+        Scaffold.of(context)
+            .showSnackBar(SnackBar(
+            content: Text(player.name + " dismissed"),
+        backgroundColor: Colors.green,));
         Navigator.pop(context);
       },
     );
@@ -319,6 +332,41 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (BuildContext context) {
         return removePlayerAlert;
       },
+    );
+  }
+
+  _sendEmail(List<Player> players) async {
+    String body = "";
+    players.forEach((player) {
+      body += player.name + ": \n"
+          "1: " + player.scoreOne.toString() + "\n"
+          "2: " + player.scoreTwo.toString() + "\n"
+          "3: " + player.scoreThree.toString() + "\n"
+          "4: " + player.scoreFour.toString() + "\n"
+          "5: " + player.scoreFive.toString() + "\n"
+          "6: " + player.scoreSix.toString() + "\n"
+          "7: " + player.scoreSeven.toString() + "\n"
+          "8: " + player.scoreEight.toString() + "\n"
+          "9: " + player.scoreNine.toString() + "\n"
+          "10: " + player.scoreTen.toString() + "\n"
+          "11: " + player.scoreEleven.toString() + "\n"
+          "12: " + player.scoreTwelve.toString() + "\n"
+          "13: " + player.scoreThirteen.toString() + "\n"
+          "14: " + player.scoreFourteen.toString() + "\n"
+          "15: " + player.scoreFifteen.toString() + "\n"
+          "16: " + player.scoreSixteen.toString() + "\n"
+          "17: " + player.scoreSeventeen.toString() + "\n"
+          "18: " + player.scoreEighteen.toString() + "\n"
+          "\n\n\n";
+
+    });
+    FlutterEmailSender.send(
+      Email(
+        body: body,
+        subject: "Score",
+        recipients: ["angin.andreas@gmail.com"],
+        isHTML: false
+      )
     );
   }
 }
