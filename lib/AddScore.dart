@@ -1,4 +1,4 @@
-import 'package:disc_golf/CustomButton.dart';
+import 'CustomButton.dart';
 import 'databaseHelper.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ class _AddScoreState extends State<AddScore> {
   Widget build(BuildContext context) {
     final Orientation orientation = MediaQuery.of(context).orientation;
     return Scaffold(
-//      backgroundColor: Color(0xff330099),
+      backgroundColor: Color(0xFF42A5F5),
         appBar: AppBar(
           title: Text("Score", style: TextStyle(color: Colors.white)),
           backgroundColor: Color(0xFF0D47A1),

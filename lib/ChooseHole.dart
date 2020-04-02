@@ -1,5 +1,5 @@
-import 'package:disc_golf/AddScore.dart';
-import 'package:disc_golf/CustomButton.dart';
+import 'AddScore.dart';
+import 'CustomButton.dart';
 import 'databaseHelper.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +18,7 @@ class _ChooseHoleState extends State<ChooseHole> {
   Widget build(BuildContext context) {
     final Orientation orientation = MediaQuery.of(context).orientation;
     return Scaffold(
-//      backgroundColor: Color(0xff330099),
+      backgroundColor: Color(0xFF42A5F5),
       appBar: AppBar(
         title: Text("Holes", style: TextStyle(color: Colors.white)),
         backgroundColor: Color(0xFF0D47A1),

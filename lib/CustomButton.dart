@@ -17,6 +17,7 @@ class CustomButton extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Material(
+        color: Color(0xFF42A5F5),
         child: Center(
           child: Stack(
             children: <Widget>[
@@ -25,10 +26,10 @@ class CustomButton extends StatelessWidget {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Color(0xFF2196F3),
-                        blurRadius: 10.0,
+                        color: Colors.black,
+                        blurRadius: 5.0,
                         // has the effect of softening the shadow
-                        spreadRadius: 2.0,
+                        spreadRadius: 0.5,
                         // has the effect of extending the shadow
                         offset: Offset(
                           1.0,

@@ -1,5 +1,5 @@
-import 'package:disc_golf/ChooseHole.dart';
-import 'package:disc_golf/databaseHelper.dart';
+import 'ChooseHole.dart';
+import 'databaseHelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,23 +32,24 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     return Scaffold(
       appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () {
-              _showRemoveAll(context);
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.mail),
-            onPressed: () {
-              _sendEmail(players);
-            },
-          ),
-        ],
+//        actions: <Widget>[
+//          IconButton(
+//            icon: Icon(Icons.delete),
+//            onPressed: () {
+//              _showRemoveAll(context);
+//            },
+//          ),
+//          IconButton(
+//            icon: Icon(Icons.mail),
+//            onPressed: () {
+//              _sendEmail(players);
+//            },
+//          ),
+//        ],
         title: Text(widget.title, style: TextStyle(color: Colors.white)),
         backgroundColor: Color(0xFF0D47A1),
       ),
+      backgroundColor: Color(0xFF42A5F5),
       body: Column(
         children: <Widget>[
           Flexible(
@@ -63,64 +64,76 @@ class _MyHomePageState extends State<MyHomePage> {
                   return GestureDetector(
                     onLongPress: () => _showRemovePlayerDialog(context, index),
                     onTap: () => _addScore(index),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0xFF2196F3),
-                              blurRadius: 10.0,
-                              // has the effect of softening the shadow
-                              spreadRadius: 2.0,
-                              // has the effect of extending the shadow
-                              offset: Offset(
-                                1.0,
-                                1.0,
-                              ),
-                            )
-                          ],
-                          gradient: LinearGradient(colors: [
-                            const Color(0xFF0D47A1),
-                            const Color(0xFF2196F3)
-                          ])),
-                      height: 100,
-                      child: LayoutBuilder(
-                        builder: (BuildContext context, BoxConstraints constraints){
-                        return Column(
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                  Container(
-                                    padding: EdgeInsets.only(left: 20),
-                                    width: constraints.maxWidth * 0.6,
-                                    child: Text(
-                                      _playersName(players[index]),
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                      textAlign: TextAlign.left,
+                    child: Dismissible(
+                      confirmDismiss: (DismissDirection direction) async {
+                        _showRemovePlayerDialog(context, index);
+                      },
+                      key: Key(p.name),
+                      onDismissed: (direction) {
+                        _showRemovePlayerDialog(context, index);
+//                        players.removeAt(index);
+//                        DatabaseHelper helper = DatabaseHelper.instance;
+//                        await helper.deletePlayer(p.id);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black,
+                                blurRadius: 5.0,
+                                // has the effect of softening the shadow
+                                spreadRadius: 0.5,
+                                // has the effect of extending the shadow
+                                offset: Offset(
+                                  1.0,
+                                  1.0,
+                                ),
+                              )
+                            ],
+                            gradient: LinearGradient(colors: [
+                              const Color(0xFF0D47A1),
+                              const Color(0xFF2196F3)
+                            ])),
+                        height: 100,
+                        child: LayoutBuilder(
+                          builder: (BuildContext context, BoxConstraints constraints){
+                          return Column(
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.only(left: 20),
+                                      width: constraints.maxWidth * 0.6,
+                                      child: Text(
+                                        _playersName(players[index]),
+                                        style: TextStyle(color: Colors.white, fontSize: 20),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ),
+                                  Spacer(),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 18.0, right: 20),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text(
+                                          "Total score:",
+                                          style: TextStyle(color: Colors.white, fontSize: 20),
+                                        ),
+                                        Text(
+                                          _playersTotalScore(players[index]).toString(),
+                                          style: TextStyle(color: Colors.white, fontSize: 40),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                Spacer(),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 18.0, right: 20),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Text(
-                                        "Total score:",
-                                        style: TextStyle(color: Colors.white, fontSize: 20),
-                                      ),
-                                      Text(
-                                        _playersTotalScore(players[index]).toString(),
-                                        style: TextStyle(color: Colors.white, fontSize: 40),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        );
-                        },
+                                ],
+                              ),
+                            ],
+                          );
+                          },
+                        ),
                       ),
                     ),
                   );
@@ -292,6 +305,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _showRemovePlayerDialog(BuildContext context, int index) {
+    Player player = players[index];
     // set up the buttons
     Widget noButton = FlatButton(
       child: Text("No"),
@@ -302,7 +316,6 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget yesButton = FlatButton(
       child: Text("Yes"),
       onPressed: () async {
-        Player player = players[index];
         DatabaseHelper helper = DatabaseHelper.instance;
         await helper.deletePlayer(player.id);
         setState(() {
@@ -310,7 +323,10 @@ class _MyHomePageState extends State<MyHomePage> {
         });
         Scaffold.of(context)
             .showSnackBar(SnackBar(
-            content: Text(player.name + " dismissed"),
+          duration: Duration(
+            seconds: 1
+          ),
+          content: Text(player.name + " removed"),
         backgroundColor: Colors.green,));
         Navigator.pop(context);
       },
@@ -318,8 +334,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // set up the AlertDialog
     AlertDialog removePlayerAlert = AlertDialog(
-      title: Text("Remove player"),
-      content: Text("Would you like to remove the player?"),
+      title: Text("Remove " + player.name),
+      content: Text("Would you like to remove " + player.name + "?"),
       actions: [
         yesButton,
         noButton,
@@ -364,7 +380,6 @@ class _MyHomePageState extends State<MyHomePage> {
       Email(
         body: body,
         subject: "Score",
-        recipients: ["angin.andreas@gmail.com"],
         isHTML: false
       )
     );
