@@ -1,6 +1,9 @@
+import 'package:disc_golf/HelperClass.dart';
+import 'package:disc_golf/TotalScoreHomePage.dart';
+
 import 'ChooseHole.dart';
 import 'databaseHelper.dart';
-import 'PreviewPage.dart';
+import 'TableViewPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +21,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController controller = TextEditingController();
   List players = [];
+  bool totalPage = true;
 
   @override
   Widget build(BuildContext context) {
@@ -35,23 +39,13 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.table_chart),
+            icon: Icon(Icons.swap_horiz),
             onPressed: () {
-              _showPreview(context);
+              setState(() {
+                totalPage = !totalPage;
+              });
             },
           ),
-//          IconButton(
-//            icon: Icon(Icons.delete),
-//            onPressed: () {
-//              _showRemoveAll(context);
-//            },
-//          ),
-//          IconButton(
-//            icon: Icon(Icons.mail),
-//            onPressed: () {
-//              _sendEmail(players);
-//            },
-//          ),
         ],
         title: Text(widget.title, style: TextStyle(color: Colors.white)),
         backgroundColor: Color(0xFF0D47A1),
@@ -82,66 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //                        DatabaseHelper helper = DatabaseHelper.instance;
 //                        await helper.deletePlayer(p.id);
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black,
-                                blurRadius: 5.0,
-                                // has the effect of softening the shadow
-                                spreadRadius: 0.5,
-                                // has the effect of extending the shadow
-                                offset: Offset(
-                                  1.0,
-                                  1.0,
-                                ),
-                              )
-                            ],
-                            gradient: LinearGradient(colors: [
-                              const Color(0xFF0D47A1),
-                              const Color(0xFF2196F3)
-                            ])),
-                        height: 100,
-                        child: LayoutBuilder(
-                          builder: (BuildContext context, BoxConstraints constraints){
-                          return Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                    Container(
-                                      padding: EdgeInsets.only(left: 20),
-                                      width: constraints.maxWidth * 0.6,
-                                      child: Text(
-                                        _playersName(players[index]),
-                                        style: TextStyle(color: Colors.white, fontSize: 20),
-                                        textAlign: TextAlign.left,
-                                      ),
-                                    ),
-                                  Spacer(),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 18.0, right: 20),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text(
-                                          "Total score:",
-                                          style: TextStyle(color: Colors.white, fontSize: 20),
-                                        ),
-                                        Text(
-                                          _playersTotalScore(players[index]).toString(),
-                                          style: TextStyle(color: Colors.white, fontSize: 40),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
-                          },
-                        ),
-                      ),
+                      child: totalPage ? TotalScoreHomePage(player: players[index],) : TableViewPage(player: players[index],)
                     ),
                   );
                 }),
@@ -191,10 +126,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return player;
   }
 
-  String _playersName(Player player) {
-    return player.name;
-  }
-
   _addScore(int index, BuildContext context) async {
     final result = await Navigator.push(
       context,
@@ -210,33 +141,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ..showSnackBar(SnackBar(content: Text("$result"),
           backgroundColor: Colors.green,
           duration: Duration(seconds: 2),));
-  }
-
-  int _playersTotalScore(Player player){
-    return player.scoreOne +
-        player.scoreTwo +
-        player.scoreThree +
-        player.scoreFour +
-        player.scoreFive +
-        player.scoreSix +
-        player.scoreSeven +
-        player.scoreEight +
-        player.scoreNine +
-        player.scoreTen +
-        player.scoreEleven +
-        player.scoreTwelve +
-        player.scoreThirteen +
-        player.scoreFourteen +
-        player.scoreFifteen +
-        player.scoreSixteen +
-        player.scoreSeventeen +
-        player.scoreEighteen;
-  }
-
-  _removePlayer(index) async {
-    setState(() {
-      players.removeAt(index);
-    });
   }
 
   _showAddPlayerDialog(BuildContext context) {
@@ -396,14 +300,6 @@ class _MyHomePageState extends State<MyHomePage> {
         subject: "Score",
         isHTML: false
       )
-    );
-  }
-
-  _showPreview(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => PreviewPage(players: players,)),
     );
   }
 }
