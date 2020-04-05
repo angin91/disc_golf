@@ -19,7 +19,7 @@ class _AddScoreState extends State<AddScore> {
     return Scaffold(
       backgroundColor: Color(0xFF42A5F5),
         appBar: AppBar(
-          title: Text("Score", style: TextStyle(color: Colors.white)),
+          title: Text("Update score (" + widget.player.name + ")", style: TextStyle(color: Colors.white)),
           backgroundColor: Color(0xFF0D47A1),
         ),
         body: Center(
@@ -30,20 +30,25 @@ class _AddScoreState extends State<AddScore> {
             crossAxisSpacing: 4.0,
             childAspectRatio: (orientation == Orientation.portrait) ? 1.0 : 1.3,
             children: <Widget>[
-              CustomButton(onPressed: () {_addScore(1);Navigator.pop(context);Navigator.pop(context);}, buttonName: "1",),
-              CustomButton(onPressed: () {_addScore(2);Navigator.pop(context);Navigator.pop(context);}, buttonName: "2",),
-              CustomButton(onPressed: () {_addScore(3);Navigator.pop(context);Navigator.pop(context);}, buttonName: "3",),
-              CustomButton(onPressed: () {_addScore(4);Navigator.pop(context);Navigator.pop(context);}, buttonName: "4",),
-              CustomButton(onPressed: () {_addScore(5);Navigator.pop(context);Navigator.pop(context);}, buttonName: "5",),
-              CustomButton(onPressed: () {_addScore(6);Navigator.pop(context);Navigator.pop(context);}, buttonName: "6",),
-              CustomButton(onPressed: () {_addScore(7);Navigator.pop(context);Navigator.pop(context);}, buttonName: "7",),
-              CustomButton(onPressed: () {_addScore(8);Navigator.pop(context);Navigator.pop(context);}, buttonName: "8",),
-              CustomButton(onPressed: () {_addScore(9);Navigator.pop(context);Navigator.pop(context);}, buttonName: "9",),
-              CustomButton(onPressed: () {_addScore(10);Navigator.pop(context);Navigator.pop(context);}, buttonName: "10",)
+              CustomButton(onPressed: () {_addScore(1);Navigator.pop(context);Navigator.pop(context, _snackbarText(1));}, buttonName: "1",),
+              CustomButton(onPressed: () {_addScore(2);Navigator.pop(context);Navigator.pop(context, _snackbarText(2));}, buttonName: "2",),
+              CustomButton(onPressed: () {_addScore(3);Navigator.pop(context);Navigator.pop(context, _snackbarText(3));}, buttonName: "3",),
+              CustomButton(onPressed: () {_addScore(4);Navigator.pop(context);Navigator.pop(context, _snackbarText(4));}, buttonName: "4",),
+              CustomButton(onPressed: () {_addScore(5);Navigator.pop(context);Navigator.pop(context, _snackbarText(5));}, buttonName: "5",),
+              CustomButton(onPressed: () {_addScore(6);Navigator.pop(context);Navigator.pop(context, _snackbarText(6));}, buttonName: "6",),
+              CustomButton(onPressed: () {_addScore(7);Navigator.pop(context);Navigator.pop(context, _snackbarText(7));}, buttonName: "7",),
+              CustomButton(onPressed: () {_addScore(8);Navigator.pop(context);Navigator.pop(context, _snackbarText(8));}, buttonName: "8",),
+              CustomButton(onPressed: () {_addScore(9);Navigator.pop(context);Navigator.pop(context, _snackbarText(9));}, buttonName: "9",),
+              CustomButton(onPressed: () {_addScore(10);Navigator.pop(context);Navigator.pop(context, _snackbarText(10));}, buttonName: "10",),
+              CustomButton(onPressed: () {_addScore(0);Navigator.pop(context);Navigator.pop(context, _snackbarText(0));}, buttonName: "0",),
             ],
           ),
         ),
     );
+  }
+
+  String _snackbarText(int score){
+    return widget.player.name + ": \nHole: " + widget.hole.toString() + "\nScore: " + score.toString();
   }
 
   _addScore(int score) async {

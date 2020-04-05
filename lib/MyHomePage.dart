@@ -1,5 +1,6 @@
 import 'ChooseHole.dart';
 import 'databaseHelper.dart';
+import 'PreviewPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,7 +33,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     return Scaffold(
       appBar: AppBar(
-//        actions: <Widget>[
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.table_chart),
+            onPressed: () {
+              _showPreview(context);
+            },
+          ),
 //          IconButton(
 //            icon: Icon(Icons.delete),
 //            onPressed: () {
@@ -45,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //              _sendEmail(players);
 //            },
 //          ),
-//        ],
+        ],
         title: Text(widget.title, style: TextStyle(color: Colors.white)),
         backgroundColor: Color(0xFF0D47A1),
       ),
@@ -63,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Player p = players[index];
                   return GestureDetector(
                     onLongPress: () => _showRemovePlayerDialog(context, index),
-                    onTap: () => _addScore(index),
+                    onTap: () => _addScore(index, context),
                     child: Dismissible(
                       confirmDismiss: (DismissDirection direction) async {
                         _showRemovePlayerDialog(context, index);
@@ -188,14 +195,21 @@ class _MyHomePageState extends State<MyHomePage> {
     return player.name;
   }
 
-  _addScore(int index) {
-    Navigator.push(
+  _addScore(int index, BuildContext context) async {
+    final result = await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => ChooseHole(
                 player: players[index],
               )),
     );
+
+    if(result != null)
+      Scaffold.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text("$result"),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 2),));
   }
 
   int _playersTotalScore(Player player){
@@ -382,6 +396,14 @@ class _MyHomePageState extends State<MyHomePage> {
         subject: "Score",
         isHTML: false
       )
+    );
+  }
+
+  _showPreview(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => PreviewPage(players: players,)),
     );
   }
 }
