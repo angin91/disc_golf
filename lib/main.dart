@@ -1,10 +1,14 @@
-import 'MyHomePage.dart';
+import 'package:disc_golf/StartPage.dart';
+
 import 'package:flutter/material.dart';
+
+import 'Alert.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
 
+  final icons = [ Icons.sms, Icons.mail, Icons.phone ];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Golf score'),
+      home: StartPage(title: "Disc golf",),
     );
   }
 }
