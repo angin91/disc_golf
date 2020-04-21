@@ -1,4 +1,5 @@
 import 'package:disc_golf/ChooseCoursePage.dart';
+import 'package:disc_golf/HistoryPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -24,16 +25,12 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
   Map scores = Map();
   Course course;
   Game game;
-  AnimationController _controller;
-  bool _flag = true;
-  Color _color = Colors.blue;
 
 
   @override
   void initState() {
     super.initState();
     _startUnfinishedGame();
-    _controller = AnimationController(vsync: this, duration: Duration(seconds: 1), value: 1);
   }
 
   @override
@@ -82,14 +79,17 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
                 opacity: 0.85,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.015, vertical: screenHeight * 0.015),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50.0),
-                      color: Colors.white,
-                    ),
-                    child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.20, vertical: screenHeight * 0.022),
-                        child: Text("Score list", style: TextStyle(fontFamily: "Inter", fontSize: 15, color: Colors.black),)
+                  child: GestureDetector(
+                    onTap: () => _history(),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50.0),
+                        color: Colors.white,
+                      ),
+                      child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.20, vertical: screenHeight * 0.022),
+                          child: Text("Score list", style: TextStyle(fontFamily: "Inter", fontSize: 15, color: Colors.black),)
+                      ),
                     ),
                   ),
                 ),
@@ -145,8 +145,7 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
                                 child: Center(
                                   child: Text(
                                     (index + 1).toString(),
-                                    style:
-                                    TextStyle(color: Colors.black, fontSize: 145),
+                                    style: TextStyle(fontFamily: "Inter",color: Colors.black, fontSize: 145),
                                   ),
                                 ),
                               ),
@@ -239,7 +238,10 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
     }
   }
 
-
+  _history() async {
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => HistoryPage()));
+  }
 
   Widget playerColumn(String name, int throws, Size size){
     return Padding(

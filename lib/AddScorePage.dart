@@ -28,7 +28,7 @@ class _AddScorePageState extends State<AddScorePage> {
       appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black),
           elevation: 0.0,
-          title: Text("Add score", style: TextStyle(color: Colors.black)),
+          title: Text("Add score", style: TextStyle(fontFamily: "Inter", color: Colors.black,)),
           backgroundColor: Colors.white),
       backgroundColor: Colors.white,
       body: Column(
@@ -70,7 +70,7 @@ class _AddScorePageState extends State<AddScorePage> {
                           padding: const EdgeInsets.only(left: 15),
                           child: Text(
                             playerList[index].name,
-                            style: TextStyle(color: Colors.black, fontSize: 20),
+                            style: TextStyle(fontFamily: "Inter", color: Colors.black, fontSize: 20),
                             textAlign: TextAlign.left,
                           ),
                         ),

@@ -44,7 +44,7 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
         appBar: AppBar(
             iconTheme: IconThemeData(color: Colors.black),
             elevation: 0.0,
-            title: Text("Choose players", style: TextStyle(color: Colors.black)),
+            title: Text("Choose players", style: TextStyle(fontFamily: "Inter", color: Colors.black)),
             backgroundColor: Colors.white),
         backgroundColor: Colors.white,
         body: (players == null || players.length == 0)
@@ -57,7 +57,7 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
           backgroundColor: Color(0xFF43991C),
           label: Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-            child: Text("Start game"),
+            child: Text("Start game", style: TextStyle(fontFamily: "Inter",)),
           ),
         )
     );
@@ -91,7 +91,7 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
               child: Center(
                 child: Text(
                   "+ Add first player",
-                  style: TextStyle(color: const Color(0xFF43991C)),
+                  style: TextStyle(fontFamily: "Inter", color: const Color(0xFF43991C)),
                 ),
               )),
         ),
@@ -143,8 +143,8 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
                               padding: const EdgeInsets.only(left: 15),
                               child: Text(
                                 players[index].name,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 20),
+                                style: TextStyle(fontFamily: "Inter",
+                                      color: Colors.black, fontSize: 20),
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -182,7 +182,7 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
               onTap: () => _showAddPlayerDialog(context),
               child: Text(
                 "+ Add more player",
-                style: TextStyle(color: const Color(0xFF43991C)),
+                style: TextStyle(fontFamily: "Inter", color: const Color(0xFF43991C)),
               )),
         ),
       ],
@@ -213,7 +213,7 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
         controller.clear();
         Navigator.pop(context);
       },
-      child: Text("OK"),
+      child: Text("OK", style: TextStyle(fontFamily: "Inter",)),
     );
 
     Widget cancelButton = FlatButton(
@@ -223,12 +223,12 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
           Navigator.pop(context);
         });
       },
-      child: Text("Cancel"),
+      child: Text("Cancel", style: TextStyle(fontFamily: "Inter",)),
     );
 
     // set up the AlertDialog
     AlertDialog addPlayerAlert = AlertDialog(
-      title: Text("Add player"),
+      title: Text("Add player", style: TextStyle(fontFamily: "Inter",)),
       content: TextField(
         controller: controller,
         decoration: InputDecoration(helperText: "Enter name"),
@@ -254,7 +254,7 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
     } else {
       if(selected.length == 4){
         Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text("You can only add 4 players in a game"),
+          content: Text("You can only add 4 players in a game", style: TextStyle(fontFamily: "Inter",)),
           backgroundColor: Colors.red,
           duration: Duration(seconds: 2),
         ));

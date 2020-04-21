@@ -344,6 +344,24 @@ class DatabaseHelper {
     );
   }
 
+  Future<void> deleteScore(int id) async {
+    Database db = await database;
+    await db.delete(
+      tableScore,
+      where: "id = ?",
+      whereArgs: [id],
+    );
+  }
+
+  Future<void> deleteGamePlayerScore(int gameId, int scoreId, int playerId) async {
+    Database db = await database;
+    await db.delete(
+      tableGamePlayerScore,
+      where: "$columnGameId = ? and $columnScoreId = ? and $columnPlayerId = ?",
+      whereArgs: [gameId, scoreId, playerId],
+    );
+  }
+
   Future<void> updatePlayer(Player player) async {
     Database db = await database;
 
@@ -401,21 +419,9 @@ class DatabaseHelper {
     maps.forEach((map) {
       GamePlayerScore gps = GamePlayerScore.fromMap(map);
       playerIds.add(gps.playerId);
-      print("here we go " + playerIds.length.toString());
     });
-    print("here we go " + playerIds.length.toString());
     return playerIds;
   }
-
-//  Future<List<Game>> queryAllGames() async {
-//    Database db = await database;
-//    List<Map> maps = await db.query(tableGame);
-//    List<Game> games = List();
-//    maps.forEach((map) {
-//      games.add(Game.fromMap(map));
-//    });
-//    return games;
-//  }
 
   Future<Score> queryScoreForPlayer(int gameId, int playerId) async {
     Database db = await database;
@@ -430,5 +436,18 @@ class DatabaseHelper {
       return score;
     }
     return null;
+  }
+
+  Future<List<int>> queryAllGamesFromPlayer(int playerId) async {
+    Database db = await database;
+    List<Map> maps = await db.query(tableGamePlayerScore,
+        columns: [columnGameId, columnPlayerId, columnScoreId],
+        where: '$columnPlayerId = ?',
+        whereArgs: [playerId]);
+        List<int> games = List();
+        maps.forEach((map) {
+          games.add(GamePlayerScore.fromMap(map).gameId);
+        });
+    return games;
   }
 }

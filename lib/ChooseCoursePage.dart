@@ -35,7 +35,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage>
         appBar: AppBar(
             iconTheme: IconThemeData(color: Colors.black),
             elevation: 0.0,
-            title: Text("Choose course", style: TextStyle(color: Colors.black)),
+            title: Text("Choose course", style: TextStyle(fontFamily: "Inter",color: Colors.black)),
             backgroundColor: Colors.white),
         backgroundColor: Colors.white,
         body: (courses == null || courses.length == 0)
@@ -48,7 +48,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage>
           backgroundColor: Color(0xFF43991C),
           label: Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-            child: Text("Next"),
+            child: Text("Next", style: TextStyle(fontFamily: "Inter",)),
           ),
         ));
   }
@@ -81,7 +81,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage>
               child: Center(
                 child: Text(
                   "+ Add first course",
-                  style: TextStyle(color: const Color(0xFF43991C)),
+                  style: TextStyle(fontFamily: "Inter", color: const Color(0xFF43991C)),
                 ),
               )),
         ),
@@ -139,8 +139,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage>
                             ),
                             Text(
                               courses[index].name,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20),
+                              style: TextStyle(fontFamily: "Inter", color: Colors.black, fontSize: 20),
                               textAlign: TextAlign.left,
                             ),
                             Spacer(),
@@ -182,7 +181,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage>
               onTap: () => _showAddCourse(context),
               child: Text(
                 "+ Add more courses",
-                style: TextStyle(color: const Color(0xFF43991C)),
+                style: TextStyle(fontFamily: "Inter", color: const Color(0xFF43991C)),
               )),
         ),
       ],

@@ -27,7 +27,7 @@ class _CreateNewCoursePageState extends State<CreateNewCoursePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Create new course", style: TextStyle(color: Colors.black),),
+          "Create new course", style: TextStyle(fontFamily: "Inter", color: Colors.black),),
         iconTheme: IconThemeData(
           color: Colors.black, //change your color here
         ),
@@ -190,13 +190,16 @@ class _CreateNewCoursePageState extends State<CreateNewCoursePage> {
     }
   }
 
-  _saveCourse() {
+  _saveCourse() async {
     setState(() {
       course.numberOfHoles = numberOfHoles;
       course.name = courseName;
     });
     DatabaseHelper helper = DatabaseHelper.instance;
-    helper.insertCourse(course);
+    var courseId = await helper.insertCourse(course);
+    setState(() {
+      course.id = courseId;
+    });
     Navigator.pop(context, course);
   }
 
