@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 import 'AddScorePage.dart';
+import 'Alert.dart';
 import 'Domain/Course.dart';
 import 'Domain/Game.dart';
 import 'Domain/Player.dart';
@@ -12,7 +13,10 @@ import 'Domain/Score.dart';
 import 'Domain/databaseHelper.dart';
 
 class StartPage extends StatefulWidget {
-  StartPage({Key key, this.title,}) : super(key: key);
+  StartPage({
+    Key key,
+    this.title,
+  }) : super(key: key);
 
   final String title;
 
@@ -20,12 +24,11 @@ class StartPage extends StatefulWidget {
   _StartPageState createState() => _StartPageState();
 }
 
-class _StartPageState extends State<StartPage> with SingleTickerProviderStateMixin{
-
+class _StartPageState extends State<StartPage>
+    with SingleTickerProviderStateMixin {
   Map scores = Map();
   Course course;
   Game game;
-
 
   @override
   void initState() {
@@ -35,10 +38,8 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown
-    ]);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return scores.length == 0 ? startPage() : gamePage();
   }
 
@@ -48,8 +49,8 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/background_startpage.jpg"), fit: BoxFit.cover)
-      ),
+              image: AssetImage("assets/background_startpage.jpg"),
+              fit: BoxFit.cover)),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(
@@ -57,8 +58,14 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text("Discgolf", style: TextStyle(fontFamily: "Inter", fontSize: 60, color: Colors.white),),
-              SizedBox(height: screenHeight * 0.10,),
+              Text(
+                "Discgolf",
+                style: TextStyle(
+                    fontFamily: "Inter", fontSize: 60, color: Colors.white),
+              ),
+              SizedBox(
+                height: screenHeight * 0.10,
+              ),
               Opacity(
                 opacity: 0.85,
                 child: GestureDetector(
@@ -69,16 +76,25 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
                       color: const Color(0xFF43991C),
                     ),
                     child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.19, vertical: screenHeight * 0.022),
-                        child: Text("New game", style: TextStyle(fontFamily: "Inter", fontSize: 15, color: Colors.white),)
-                    ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.19,
+                            vertical: screenHeight * 0.022),
+                        child: Text(
+                          "New game",
+                          style: TextStyle(
+                              fontFamily: "Inter",
+                              fontSize: 15,
+                              color: Colors.white),
+                        )),
                   ),
                 ),
               ),
               Opacity(
                 opacity: 0.85,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.015, vertical: screenHeight * 0.015),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.015,
+                      vertical: screenHeight * 0.015),
                   child: GestureDetector(
                     onTap: () => _history(),
                     child: Container(
@@ -87,15 +103,23 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
                         color: Colors.white,
                       ),
                       child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.20, vertical: screenHeight * 0.022),
-                          child: Text("Score list", style: TextStyle(fontFamily: "Inter", fontSize: 15, color: Colors.black),)
-                      ),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.20,
+                              vertical: screenHeight * 0.022),
+                          child: Text(
+                            "Score list",
+                            style: TextStyle(
+                                fontFamily: "Inter",
+                                fontSize: 15,
+                                color: Colors.black),
+                          )),
                     ),
                   ),
                 ),
               ),
-
-              SizedBox(height: screenHeight * 0.2,),
+              SizedBox(
+                height: screenHeight * 0.2,
+              ),
             ],
           ),
         ),
@@ -103,7 +127,7 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
     );
   }
 
-  Widget gamePage(){
+  Widget gamePage() {
     var playerList = scores.keys.toList();
     var scoreList = scores.values.toList();
     final Size size = MediaQuery.of(context).size;
@@ -111,7 +135,8 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
       body: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: size.height * 0.05, bottom: size.height * 0.05),
+            padding: EdgeInsets.only(
+                top: size.height * 0.05, bottom: size.height * 0.05),
             child: SizedBox(
               height: size.height * 0.8,
               width: size.width,
@@ -124,14 +149,21 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                          padding: EdgeInsets.only(
+                              top: 20.0, left: 20.0, right: 20.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("Hole no.", style: TextStyle(fontFamily: "Inter", color: Colors.black, fontSize: 18)),
-                              Text(
-                                  "Par " + course.getPar(index + 1).toString(),
-                                  style: TextStyle(fontFamily: "Inter", color: Colors.grey, fontSize: 18)),
+                              Text("Hole no.",
+                                  style: TextStyle(
+                                      fontFamily: "Inter",
+                                      color: Colors.black,
+                                      fontSize: 18)),
+                              Text("Par " + course.getPar(index + 1).toString(),
+                                  style: TextStyle(
+                                      fontFamily: "Inter",
+                                      color: Colors.grey,
+                                      fontSize: 18)),
                             ],
                           ),
                         ),
@@ -141,11 +173,16 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: size.height * 0.1),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 0.0,
+                                    vertical: size.height * 0.1),
                                 child: Center(
                                   child: Text(
                                     (index + 1).toString(),
-                                    style: TextStyle(fontFamily: "Inter",color: Colors.black, fontSize: 145),
+                                    style: TextStyle(
+                                        fontFamily: "Inter",
+                                        color: Colors.black,
+                                        fontSize: 145),
                                   ),
                                 ),
                               ),
@@ -155,32 +192,93 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
                               Row(
                                 children: <Widget>[
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       playerColumn("", 99, size),
-                                      scores.length > 0 ? playerColumn(playerList[0].name, scoreList[0].getScoreFromHole(index+1), size) : Container(),
-                                      scores.length > 1 ? playerColumn(playerList[1].name, scoreList[1].getScoreFromHole(index+1), size) : Container(),
-                                      scores.length > 2 ? playerColumn(playerList[2].name, scoreList[2].getScoreFromHole(index+1), size) : Container(),
-                                      scores.length > 3 ? playerColumn(playerList[3].name, scoreList[3].getScoreFromHole(index+1), size) : Container(),
+                                      scores.length > 0
+                                          ? playerColumn(
+                                              playerList[0].name,
+                                              scoreList[0]
+                                                  .getScoreFromHole(index + 1),
+                                              size)
+                                          : Container(),
+                                      scores.length > 1
+                                          ? playerColumn(
+                                              playerList[1].name,
+                                              scoreList[1]
+                                                  .getScoreFromHole(index + 1),
+                                              size)
+                                          : Container(),
+                                      scores.length > 2
+                                          ? playerColumn(
+                                              playerList[2].name,
+                                              scoreList[2]
+                                                  .getScoreFromHole(index + 1),
+                                              size)
+                                          : Container(),
+                                      scores.length > 3
+                                          ? playerColumn(
+                                              playerList[3].name,
+                                              scoreList[3]
+                                                  .getScoreFromHole(index + 1),
+                                              size)
+                                          : Container(),
                                     ],
                                   ),
                                   Spacer(),
                                   Column(
                                     children: <Widget>[
                                       scoreColumn("", 99, size),
-                                      scores.length > 0 ? scoreColumn(playerList[0].name, scoreList[0].getScoreFromHole(index+1), size) : Container(),
-                                      scores.length > 1 ? scoreColumn(playerList[1].name, scoreList[1].getScoreFromHole(index+1), size) : Container(),
-                                      scores.length > 2 ? scoreColumn(playerList[2].name, scoreList[2].getScoreFromHole(index+1), size) : Container(),
-                                      scores.length > 3 ? scoreColumn(playerList[3].name, scoreList[3].getScoreFromHole(index+1), size) : Container(),
+                                      scores.length > 0
+                                          ? scoreColumn(
+                                              playerList[0].name,
+                                              scoreList[0]
+                                                  .getScoreFromHole(index + 1),
+                                              size)
+                                          : Container(),
+                                      scores.length > 1
+                                          ? scoreColumn(
+                                              playerList[1].name,
+                                              scoreList[1]
+                                                  .getScoreFromHole(index + 1),
+                                              size)
+                                          : Container(),
+                                      scores.length > 2
+                                          ? scoreColumn(
+                                              playerList[2].name,
+                                              scoreList[2]
+                                                  .getScoreFromHole(index + 1),
+                                              size)
+                                          : Container(),
+                                      scores.length > 3
+                                          ? scoreColumn(
+                                              playerList[3].name,
+                                              scoreList[3]
+                                                  .getScoreFromHole(index + 1),
+                                              size)
+                                          : Container(),
                                     ],
                                   ),
                                   Column(
                                     children: <Widget>[
                                       totalScoreColumn("", 99, size),
-                                      scores.length > 0 ? totalScoreColumn(playerList[0].name, scoreList[0].totalScore(), size) : Container(),
-                                      scores.length > 1 ? totalScoreColumn(playerList[1].name, scoreList[1].totalScore(), size) : Container(),
-                                      scores.length > 2 ? totalScoreColumn(playerList[2].name, scoreList[2].totalScore(), size) : Container(),
-                                      scores.length > 3 ? totalScoreColumn(playerList[3].name, scoreList[3].totalScore(), size) : Container(),
+                                      scores.length > 0
+                                          ? totalScoreColumn(playerList[0].name,
+                                              scoreList[0].totalScore(), size)
+                                          : Container(),
+                                      scores.length > 1
+                                          ? totalScoreColumn(playerList[1].name,
+                                              scoreList[1].totalScore(), size)
+                                          : Container(),
+                                      scores.length > 2
+                                          ? totalScoreColumn(playerList[2].name,
+                                              scoreList[2].totalScore(), size)
+                                          : Container(),
+                                      scores.length > 3
+                                          ? totalScoreColumn(playerList[3].name,
+                                              scoreList[3].totalScore(), size)
+                                          : Container(),
                                     ],
                                   )
                                 ],
@@ -190,9 +288,11 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
                                 child: Center(
                                     child: GestureDetector(
                                         onTap: () => _addScore(index + 1),
-                                        child: Text("+ Add score", style: TextStyle(fontFamily: "Inter", color: const Color(0xFF43991C),))
-                                    )
-                                ),
+                                        child: Text("+ Add score",
+                                            style: TextStyle(
+                                              fontFamily: "Inter",
+                                              color: const Color(0xFF43991C),
+                                            )))),
                               )
                             ],
                           ),
@@ -208,30 +308,33 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
               ),
             ),
           ),
-
           GestureDetector(
-            onTap: () => _finishGame(),
+            onTap: () => _showFinishGame(),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50.0),
                 color: const Color(0xFF43991C),
               ),
               child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.19, vertical: size.height * 0.022),
-                  child: Text("Finish round", style: TextStyle(fontFamily: "Inter", fontSize: 15, color: Colors.white),)
-              ),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.19,
+                      vertical: size.height * 0.022),
+                  child: Text(
+                    "Finish round",
+                    style: TextStyle(
+                        fontFamily: "Inter", fontSize: 15, color: Colors.white),
+                  )),
             ),
           ),
-
         ],
       ),
     );
   }
 
   _newGame() async {
-    final result = await Navigator.push(context, MaterialPageRoute(
-        builder: (context) => ChooseCoursePage()));
-    if(result != null){
+    final result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ChooseCoursePage()));
+    if (result != null) {
       scores = result[0];
       course = result[1];
       game = result[2];
@@ -239,31 +342,42 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
   }
 
   _history() async {
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => HistoryPage()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => HistoryPage()));
   }
 
-  Widget playerColumn(String name, int throws, Size size){
+  Widget playerColumn(String name, int throws, Size size) {
     return Padding(
       padding: EdgeInsets.only(left: size.width * 0.1, top: 2, bottom: 2),
-      child: Text(name, style: TextStyle(fontFamily: "Inter", color: Colors.grey)),
+      child:
+          Text(name, style: TextStyle(fontFamily: "Inter", color: Colors.grey)),
     );
   }
 
-  Widget scoreColumn(String name, int throws, Size size){
+  Widget scoreColumn(String name, int throws, Size size) {
     return Padding(
         padding: EdgeInsets.only(right: size.width * 0.05, top: 2, bottom: 2),
-        child: throws == 99 ? Text("Throws", style: TextStyle(fontFamily: "Inter", color: Colors.grey)):
-        throws == 0 ? Text("-", style: TextStyle(fontFamily: "Inter", color: Colors.grey)) :
-        Text(throws.toString(), style: TextStyle(fontFamily: "Inter", color: Colors.grey)));
+        child: throws == 99
+            ? Text("Throws",
+                style: TextStyle(fontFamily: "Inter", color: Colors.grey))
+            : throws == 0
+                ? Text("-",
+                    style: TextStyle(fontFamily: "Inter", color: Colors.grey))
+                : Text(throws.toString(),
+                    style: TextStyle(fontFamily: "Inter", color: Colors.grey)));
   }
 
-  Widget totalScoreColumn(String name, int throws, Size size){
+  Widget totalScoreColumn(String name, int throws, Size size) {
     return Padding(
         padding: EdgeInsets.only(right: size.width * 0.1, top: 2, bottom: 2),
-        child: throws == 99 ? Text("Tot", style: TextStyle(fontFamily: "Inter", color: Colors.grey)):
-        throws == 0 ? Text("-", style: TextStyle(fontFamily: "Inter", color: Colors.grey)) :
-        Text(throws.toString(), style: TextStyle(fontFamily: "Inter", color: Colors.grey)));
+        child: throws == 99
+            ? Text("Tot",
+                style: TextStyle(fontFamily: "Inter", color: Colors.grey))
+            : throws == 0
+                ? Text("-",
+                    style: TextStyle(fontFamily: "Inter", color: Colors.grey))
+                : Text(throws.toString(),
+                    style: TextStyle(fontFamily: "Inter", color: Colors.grey)));
   }
 
   @override
@@ -274,8 +388,41 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
   }
 
   Future<void> _addScore(int hole) async {
-    Navigator.push(context,  MaterialPageRoute(
-        builder: (context) => AddScorePage(scores: scores, hole: hole,)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AddScorePage(
+                  scores: scores,
+                  hole: hole,
+                )));
+  }
+
+  _showFinishGame() {
+    Alert(
+      title: "Finish game",
+      context: context,
+      content: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(bottom: 18.0),
+            child: Text("Are you sure?", style: TextStyle(fontFamily: "Inter", fontSize: 13)),
+          ),
+          Row(
+            children: <Widget>[
+              FlatButton(
+                onPressed: () => _finishGame,
+                child: Text("Yes", style: TextStyle(fontFamily: "Inter", fontSize: 20)),
+              ),
+              Spacer(),
+              FlatButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("No", style: TextStyle(fontFamily: "Inter", fontSize: 20)),
+              )
+            ],
+          )
+        ],
+      )
+    ).show();
   }
 
   _finishGame() async {
@@ -285,21 +432,22 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
     });
     DatabaseHelper helper = DatabaseHelper.instance;
     await helper.updateGame(game);
+    Navigator.pop(context);
   }
 
   _startUnfinishedGame() async {
     DatabaseHelper helper = DatabaseHelper.instance;
     game = await helper.queryUnfinishedGame();
-    if(game != null){
+    if (game != null) {
       course = await helper.queryCourse(game.courseId);
 
       List<int> playerIdList = await helper.queryAllPlayersInGame(game.id);
       List<Player> playerList = [];
-      for(int playerId in playerIdList){
+      for (int playerId in playerIdList) {
         Player player = await helper.queryPlayer(playerId);
         playerList.add(player);
       }
-      for(Player player in playerList){
+      for (Player player in playerList) {
         Score score = await helper.queryScoreForPlayer(game.id, player.id);
         setState(() {
           scores.putIfAbsent(player, () => score);

@@ -25,7 +25,6 @@ class _SummaryPageState extends State<SummaryPage> {
   void initState() {
     super.initState();
     _setupScore();
-    print(widget.course.numberOfHoles);
   }
 
   @override
@@ -57,7 +56,7 @@ class _SummaryPageState extends State<SummaryPage> {
                 scores.length > 1 ? Expanded(
                   child: Column(
                     children: <Widget>[
-                      Align(alignment: ,child: Text(scores.keys.toList()[1].name, style: TextStyle(fontFamily: "Inter",))),
+                      Center(child: Text(scores.keys.toList()[1].name, style: TextStyle(fontFamily: "Inter",))),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 18.0),
                         child: Text("Throws", style: TextStyle(fontFamily: "Inter", color: Colors.grey[600])),

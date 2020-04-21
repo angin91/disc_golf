@@ -277,10 +277,8 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
     for (Player p in selected) {
       Score score = Score();
       int scoreId = await helper.insertScore(score);
-      print("insert score: " +scoreId.toString());
       score.id = scoreId;
       scores.putIfAbsent(p, () => score);
-      print("insert gps: " + gameId.toString());
       GamePlayerScore gamePlayerScore = GamePlayerScore(gameId, p.id, scoreId);
       await helper.insertGamePlayerScore(gamePlayerScore);
     }

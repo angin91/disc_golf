@@ -214,7 +214,6 @@ class _CreateNewCoursePageState extends State<CreateNewCoursePage> {
   }
 
   _changeName() {
-    print("change name");
     Alert(
       context: context,
         title: "Change name",
