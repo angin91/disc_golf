@@ -45,39 +45,39 @@ class _AddScorePageState extends State<AddScorePage> {
               },
               itemCount: widget.scores.length,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 10.0,
-                          // has the effect of softening the shadow
-                          spreadRadius: 0.02,
-                          // has the effect of extending the shadow
-                          offset: Offset(
-                            5.0,
-                            5.0,
+                return GestureDetector(
+                  onTap: () => _addScore(scoreList[index]),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            blurRadius: 10.0,
+                            // has the effect of softening the shadow
+                            spreadRadius: 0.02,
+                            // has the effect of extending the shadow
+                            offset: Offset(
+                              5.0,
+                              5.0,
+                            ),
+                          )
+                        ],
+                        color: Colors.white),
+                    height: 100,
+                    child: Center(
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Text(
+                              playerList[index].name,
+                              style: TextStyle(fontFamily: "Inter", color: Colors.black, fontSize: 20),
+                              textAlign: TextAlign.left,
+                            ),
                           ),
-                        )
-                      ],
-                      color: Colors.white),
-                  height: 100,
-                  child: Center(
-                    child: Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Text(
-                            playerList[index].name,
-                            style: TextStyle(fontFamily: "Inter", color: Colors.black, fontSize: 20),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                        Spacer(),
-                        GestureDetector(
-                          onTap: () => _addScore(scoreList[index]),
-                          child: Padding(
+                          Spacer(),
+                          Padding(
                             padding: const EdgeInsets.only(right: 15),
                             child: scoreList[index].getScoreFromHole(widget.hole) == 0 ?
                             Text("+ Add Throws", style: TextStyle(fontFamily: "Inter", color: Colors.green, fontSize: 12))
@@ -91,9 +91,9 @@ class _AddScorePageState extends State<AddScorePage> {
                                 Text(scoreList[index].getScoreFromHole(widget.hole).toString(), style: TextStyle(fontFamily: "Inter", color: Colors.grey))
                               ],
                             )
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -132,9 +132,11 @@ class _AddScorePageState extends State<AddScorePage> {
     final result = await Navigator.push(context, MaterialPageRoute(
         builder: (context) => EnterNumberPage(title: "Enter number of throws", buttonName: "Submit",)));
     DatabaseHelper instance = DatabaseHelper.instance;
-    setState(() {
-      score.setScore(widget.hole, int.parse(result));
-    });
-    instance.updateScore(score);
+    if(result != null){
+      setState(() {
+        score.setScore(widget.hole, int.parse(result));
+      });
+      instance.updateScore(score);
+    }
   }
 }

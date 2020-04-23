@@ -410,7 +410,7 @@ class _StartPageState extends State<StartPage>
           Row(
             children: <Widget>[
               FlatButton(
-                onPressed: () => _finishGame,
+                onPressed: () => _finishGame(),
                 child: Text("Yes", style: TextStyle(fontFamily: "Inter", fontSize: 20)),
               ),
               Spacer(),
