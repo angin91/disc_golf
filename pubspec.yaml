@@ -11,7 +11,7 @@ description: A new Flutter application.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.0.0+2
+version: 2.0.1+3
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -30,14 +30,12 @@ dependencies:
   flutter_launcher_icons: ^0.7.4
   flutter_swiper: ^1.1.6
   pinput: ^0.2.3
+  flutter_svg: ^0.17.4
 
 flutter_icons:
   image_path: "assets/icon.png"
   ios: true
   androind: true
-
-assets:
-  - assets/
 
 dev_dependencies:
   flutter_test:
@@ -92,3 +90,4 @@ flutter:
 
   assets:
     - assets/background_startpage.jpg
+    - assets/Discgolf_logo_neg.svg

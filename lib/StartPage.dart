@@ -2,6 +2,7 @@ import 'package:disc_golf/ChooseCoursePage.dart';
 import 'package:disc_golf/HistoryPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 import 'AddScorePage.dart';
@@ -58,13 +59,13 @@ class _StartPageState extends State<StartPage>
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(
-                "Discgolf",
-                style: TextStyle(
-                    fontFamily: "Inter", fontSize: 60, color: Colors.white),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+                child: SvgPicture.asset("assets/Discgolf_logo_neg.svg",
+                    color: Colors.white,),
               ),
               SizedBox(
-                height: screenHeight * 0.10,
+                height: screenHeight * 0.05,
               ),
               Opacity(
                 opacity: 0.85,

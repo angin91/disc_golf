@@ -1,6 +1,6 @@
 import 'databaseHelper.dart';
 
-class Game{
+class Game implements Comparable<Game>{
 
   int id;
   int courseId;
@@ -29,5 +29,10 @@ class Game{
       map[DatabaseHelper.columnId] = id;
     }
     return map;
+  }
+
+  @override
+  int compareTo(Game other) {
+    return date - other.date;
   }
 }

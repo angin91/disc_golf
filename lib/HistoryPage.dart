@@ -1,6 +1,10 @@
+import 'dart:collection';
+
 import 'package:disc_golf/Alert.dart';
 import 'package:disc_golf/Domain/Game.dart';
 import 'package:disc_golf/Domain/databaseHelper.dart';
+import 'package:disc_golf/MSwitch.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Domain/Course.dart';
 import 'Domain/Player.dart';
@@ -25,6 +29,8 @@ class _HistoryPageState extends State<HistoryPage> {
   List<Course> courses = [];
   Player selectedPlayer;
   Course selectedCourse;
+  bool isSorted = true;
+  LinkedHashMap sortedMap = LinkedHashMap();
 
   @override
   void initState(){
@@ -92,6 +98,22 @@ class _HistoryPageState extends State<HistoryPage> {
               )
             ],
           ),
+          selectedPlayer != null && selectedCourse != null ?
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              isSorted ? Text("Date") : Text("Score"),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: MSwitch(
+                    onChange: (value) {
+                      _changeSortValue(value);
+                    },
+                  value: isSorted,
+                ),
+              ),
+            ],
+          ) : Container(),
           Expanded(
             child: ListView.separated(
               separatorBuilder: (BuildContext context, int index) {
@@ -256,5 +278,27 @@ class _HistoryPageState extends State<HistoryPage> {
   _showSummaryPage(Game game) {
     Navigator.push(context, MaterialPageRoute(
         builder: (context) => SummaryPage(game: game, course: selectedCourse,)));
+  }
+
+  _changeSortValue(value) {
+
+    setState(() {
+      isSorted = !isSorted;
+    });
+
+    if(value){
+      var sortedKeys = games.keys.toList()..sort();
+      setState(() {
+        games = new LinkedHashMap
+            .fromIterable(sortedKeys, key: (k) => k, value: (k) => games[k]);
+      });
+    } else {
+      var sortedKeys = games.keys.toList(growable:false)
+        ..sort((k1, k2) => games[k1].totalScore().compareTo(games[k2].totalScore()));
+      setState(() {
+        games = new LinkedHashMap
+            .fromIterable(sortedKeys, key: (k) => k, value: (k) => games[k]);
+      });
+    }
   }
 }
