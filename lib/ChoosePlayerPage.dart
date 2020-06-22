@@ -16,8 +16,7 @@ class ChoosePlayerPage extends StatefulWidget {
 }
 
 class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
-
-  _ChoosePlayerPageState(Course course){
+  _ChoosePlayerPageState(Course course) {
     this.course = course;
   }
 
@@ -31,6 +30,7 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
     super.initState();
     _getPlayers().then((playerList) {
       setState(() {
+        playerList.sort();
         players = playerList;
       });
     });
@@ -42,9 +42,18 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
     final double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
+            actions: <Widget>[
+              selected.length == 1
+                  ? IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () => _showUpdatePlayer(context, selected[0]),
+                    )
+                  : Container(),
+            ],
             iconTheme: IconThemeData(color: Colors.black),
             elevation: 0.0,
-            title: Text("Choose players", style: TextStyle(fontFamily: "Inter", color: Colors.black)),
+            title: Text("Choose players",
+                style: TextStyle(fontFamily: "Inter", color: Colors.black)),
             backgroundColor: Colors.white),
         backgroundColor: Colors.white,
         body: (players == null || players.length == 0)
@@ -57,10 +66,12 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
           backgroundColor: Color(0xFF43991C),
           label: Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-            child: Text("Start game", style: TextStyle(fontFamily: "Inter",)),
+            child: Text("Start game",
+                style: TextStyle(
+                  fontFamily: "Inter",
+                )),
           ),
-        )
-    );
+        ));
   }
 
   Widget addFirstPlayer() {
@@ -91,7 +102,8 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
               child: Center(
                 child: Text(
                   "+ Add first player",
-                  style: TextStyle(fontFamily: "Inter", color: const Color(0xFF43991C)),
+                  style: TextStyle(
+                      fontFamily: "Inter", color: const Color(0xFF43991C)),
                 ),
               )),
         ),
@@ -143,8 +155,10 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
                               padding: const EdgeInsets.only(left: 15),
                               child: Text(
                                 players[index].name,
-                                style: TextStyle(fontFamily: "Inter",
-                                      color: Colors.black, fontSize: 20),
+                                style: TextStyle(
+                                    fontFamily: "Inter",
+                                    color: Colors.black,
+                                    fontSize: 20),
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -155,7 +169,9 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
                                 width: 25.0,
                                 height: 25.0,
                                 decoration: BoxDecoration(
-                                  color: selected.contains(players[index]) ? const Color(0xFF43991C) : Colors.white,
+                                  color: selected.contains(players[index])
+                                      ? const Color(0xFF43991C)
+                                      : Colors.white,
                                   borderRadius: new BorderRadius.all(
                                       new Radius.circular(50.0)),
                                   border: new Border.all(
@@ -163,7 +179,10 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
                                     width: 1.0,
                                   ),
                                 ),
-                                child: Icon(Icons.check, color: Colors.white,),
+                                child: Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                ),
                               ),
                             )
                           ],
@@ -182,7 +201,8 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
               onTap: () => _showAddPlayerDialog(context),
               child: Text(
                 "+ Add more player",
-                style: TextStyle(fontFamily: "Inter", color: const Color(0xFF43991C)),
+                style: TextStyle(
+                    fontFamily: "Inter", color: const Color(0xFF43991C)),
               )),
         ),
       ],
@@ -202,6 +222,7 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
     player.id = id;
     setState(() {
       players.add(player);
+      players.sort();
     });
     return player;
   }
@@ -213,7 +234,10 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
         controller.clear();
         Navigator.pop(context);
       },
-      child: Text("OK", style: TextStyle(fontFamily: "Inter",)),
+      child: Text("OK",
+          style: TextStyle(
+            fontFamily: "Inter",
+          )),
     );
 
     Widget cancelButton = FlatButton(
@@ -223,12 +247,18 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
           Navigator.pop(context);
         });
       },
-      child: Text("Cancel", style: TextStyle(fontFamily: "Inter",)),
+      child: Text("Cancel",
+          style: TextStyle(
+            fontFamily: "Inter",
+          )),
     );
 
     // set up the AlertDialog
     AlertDialog addPlayerAlert = AlertDialog(
-      title: Text("Add player", style: TextStyle(fontFamily: "Inter",)),
+      title: Text("Add player",
+          style: TextStyle(
+            fontFamily: "Inter",
+          )),
       content: TextField(
         controller: controller,
         decoration: InputDecoration(helperText: "Enter name"),
@@ -252,13 +282,16 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
         selected.remove(player);
       });
     } else {
-      if(selected.length == 4){
+      if (selected.length == 4) {
         Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text("You can only add 4 players in a game", style: TextStyle(fontFamily: "Inter",)),
+          content: Text("You can only add 4 players in a game",
+              style: TextStyle(
+                fontFamily: "Inter",
+              )),
           backgroundColor: Colors.red,
           duration: Duration(seconds: 2),
         ));
-      }else{
+      } else {
         setState(() {
           selected.add(player);
         });
@@ -293,4 +326,63 @@ class _ChoosePlayerPageState extends State<ChoosePlayerPage> {
     }
   }
 
+  _showUpdatePlayer(BuildContext context, Player selected) {
+    Widget okButton = FlatButton(
+      onPressed: () {
+        _updatePlayer(controller.text, selected);
+        controller.clear();
+        Navigator.pop(context);
+      },
+      child: Text("OK",
+          style: TextStyle(
+            fontFamily: "Inter",
+          )),
+    );
+
+    Widget cancelButton = FlatButton(
+      onPressed: () {
+        setState(() {
+          controller.clear();
+          Navigator.pop(context);
+        });
+      },
+      child: Text("Cancel",
+          style: TextStyle(
+            fontFamily: "Inter",
+          )),
+    );
+
+    // set up the AlertDialog
+    AlertDialog updatePlayerAlert = AlertDialog(
+      title: Text("Update player",
+          style: TextStyle(
+            fontFamily: "Inter",
+          )),
+      content: TextField(
+        controller: controller,
+        decoration: InputDecoration(helperText: "Enter name"),
+        maxLines: 1,
+      ),
+      actions: <Widget>[okButton, cancelButton],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return updatePlayerAlert;
+      },
+    );
+  }
+
+  Future<void> _updatePlayer(String newName, Player player) async {
+    setState(() => players.remove(player));
+    player.name = newName;
+    DatabaseHelper helper = DatabaseHelper.instance;
+    await helper.updatePlayer(player);
+    setState(() {
+      players.add(player);
+      players.sort();
+    });
+  }
 }
