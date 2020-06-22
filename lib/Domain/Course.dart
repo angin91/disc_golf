@@ -1,7 +1,7 @@
 import 'databaseHelper.dart';
 import 'package:quiver/core.dart';
 
-class Course{
+class Course implements Comparable<Course>{
 
   int id;
   String name;
@@ -257,5 +257,10 @@ class Course{
         break;
       default:
     }
+  }
+
+  @override
+  int compareTo(Course other) {
+    return name.toLowerCase().compareTo(other.name.toLowerCase());
   }
 }

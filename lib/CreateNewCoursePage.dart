@@ -7,7 +7,8 @@ import 'Domain/Course.dart';
 import 'EnterNumberPage.dart';
 
 class CreateNewCoursePage extends StatefulWidget {
-  CreateNewCoursePage({Key key}) : super(key: key);
+  CreateNewCoursePage({Key key, this.course}) : super(key: key);
+  final Course course;
 
   @override
   _CreateNewCoursePageState createState() => _CreateNewCoursePageState();
@@ -15,19 +16,37 @@ class CreateNewCoursePage extends StatefulWidget {
 
 class _CreateNewCoursePageState extends State<CreateNewCoursePage> {
   TextEditingController controller = TextEditingController();
-  String courseName = "New Course";
-  int numberOfHoles = 18;
-  Course course = Course();
+  String courseName;
+  int numberOfHoles;
+  Course course;
+  bool isUpdate;
+
+  @override
+  void initState() {
+
+    if (widget.course == null) {
+      courseName = "New Course";
+      numberOfHoles = 18;
+      course = Course();
+      isUpdate = false;
+    } else {
+      courseName = widget.course.name;
+      numberOfHoles = widget.course.numberOfHoles;
+      course = widget.course;
+      isUpdate = true;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery
-        .of(context)
-        .size;
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Create new course", style: TextStyle(fontFamily: "Inter", color: Colors.black),),
+          "Create new course",
+          style: TextStyle(fontFamily: "Inter", color: Colors.black),
+        ),
         iconTheme: IconThemeData(
           color: Colors.black, //change your color here
         ),
@@ -45,40 +64,63 @@ class _CreateNewCoursePageState extends State<CreateNewCoursePage> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Icon(Icons.flag, color: Colors.green, size: 25,),
+                      Icon(
+                        Icons.flag,
+                        color: Colors.green,
+                        size: 25,
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(courseName, style: TextStyle(
-                            fontFamily: "Inter",
-                            color: Colors.black,
-                            fontSize: 25),),
+                        child: Text(
+                          courseName,
+                          style: TextStyle(
+                              fontFamily: "Inter",
+                              color: Colors.black,
+                              fontSize: 25),
+                        ),
                       ),
                       GestureDetector(
                           onTap: () => _changeName(),
-                          child: Icon(Icons.edit, color: Colors.green, size: 20,)
-                      ),
-                    ]
-                ),
+                          child: Icon(
+                            Icons.edit,
+                            color: Colors.green,
+                            size: 20,
+                          )),
+                    ]),
               ),
               Padding(
                 padding: EdgeInsets.only(bottom: size.height * 0.02),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text("Number of holes    ", style: TextStyle(
-                        fontFamily: "Inter", color: Colors.black, fontSize: 15),),
+                    Text(
+                      "Number of holes    ",
+                      style: TextStyle(
+                          fontFamily: "Inter",
+                          color: Colors.black,
+                          fontSize: 15),
+                    ),
                     GestureDetector(
                         onTap: () => _removeOneHole(),
                         child: Icon(
-                          Icons.remove_circle, color: Colors.green, size: 20,)
+                          Icons.remove_circle,
+                          color: Colors.green,
+                          size: 20,
+                        )),
+                    Text(
+                      " " + numberOfHoles.toString() + " ",
+                      style: TextStyle(
+                          fontFamily: "Inter",
+                          color: Colors.black,
+                          fontSize: 15),
                     ),
-                    Text(" " + numberOfHoles.toString() + " ", style: TextStyle(
-                        fontFamily: "Inter", color: Colors.black, fontSize: 15),),
                     GestureDetector(
                         onTap: () => _addOneHole(),
                         child: Icon(
-                          Icons.add_circle, color: Colors.green, size: 20,)
-                    ),
+                          Icons.add_circle,
+                          color: Colors.green,
+                          size: 20,
+                        )),
                   ],
                 ),
               ),
@@ -92,13 +134,18 @@ class _CreateNewCoursePageState extends State<CreateNewCoursePage> {
                       child: Row(
                         children: <Widget>[
                           Text("Hole no",
-                              style: TextStyle(fontFamily: "Inter", color: Colors
-                                  .grey,)),
+                              style: TextStyle(
+                                fontFamily: "Inter",
+                                color: Colors.grey,
+                              )),
                           Spacer(),
                           Padding(
                             padding: EdgeInsets.only(right: size.width * 0.04),
-                            child: Text("Par", style: TextStyle(
-                              fontFamily: "Inter", color: Colors.grey,)),
+                            child: Text("Par",
+                                style: TextStyle(
+                                  fontFamily: "Inter",
+                                  color: Colors.grey,
+                                )),
                           )
                         ],
                       ),
@@ -116,15 +163,19 @@ class _CreateNewCoursePageState extends State<CreateNewCoursePage> {
                           itemBuilder: (BuildContext context, int index) {
                             return Row(
                               children: <Widget>[
-                                Text((index + 1).toString(), style: TextStyle(
-                                    fontFamily: "Inter", fontSize: 15)),
+                                Text((index + 1).toString(),
+                                    style: TextStyle(
+                                        fontFamily: "Inter", fontSize: 15)),
                                 Spacer(),
                                 Text(course.getPar(index + 1).toString(),
                                     style: TextStyle(
                                         fontFamily: "Inter", fontSize: 15)),
                                 GestureDetector(
                                   child: Icon(
-                                    Icons.edit, color: Colors.green, size: 15,),
+                                    Icons.edit,
+                                    color: Colors.green,
+                                    size: 15,
+                                  ),
                                   onTap: () => _updatePar(index + 1),
                                 ),
                               ],
@@ -137,7 +188,7 @@ class _CreateNewCoursePageState extends State<CreateNewCoursePage> {
               Padding(
                 padding: EdgeInsets.only(top: size.height * 0.05),
                 child: GestureDetector(
-                  onTap: () => _saveCourse(),
+                  onTap: () => isUpdate ?  _updateCourse() : _saveCourse(),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50.0),
@@ -147,11 +198,13 @@ class _CreateNewCoursePageState extends State<CreateNewCoursePage> {
                         padding: EdgeInsets.symmetric(
                             horizontal: size.width * 0.19,
                             vertical: size.height * 0.022),
-                        child: Text("Save course", style: TextStyle(
-                            fontFamily: "Inter",
-                            fontSize: 15,
-                            color: Colors.white),)
-                    ),
+                        child: Text(
+                          "Save course",
+                          style: TextStyle(
+                              fontFamily: "Inter",
+                              fontSize: 15,
+                              color: Colors.white),
+                        )),
                   ),
                 ),
               ),
@@ -190,11 +243,17 @@ class _CreateNewCoursePageState extends State<CreateNewCoursePage> {
     }
   }
 
+  _saveOrUpdateCourse(){
+    print(isUpdate);
+    isUpdate ?  _updateCourse() : _saveCourse();
+  }
+
   _saveCourse() async {
     setState(() {
       course.numberOfHoles = numberOfHoles;
       course.name = courseName;
     });
+    print(course);
     DatabaseHelper helper = DatabaseHelper.instance;
     var courseId = await helper.insertCourse(course);
     setState(() {
@@ -203,10 +262,23 @@ class _CreateNewCoursePageState extends State<CreateNewCoursePage> {
     Navigator.pop(context, course);
   }
 
+  _updateCourse() async {
+    setState(() {
+      course.numberOfHoles = numberOfHoles;
+      course.name = courseName;
+    });
+    DatabaseHelper helper = DatabaseHelper.instance;
+    await helper.updateCourse(course);
+    Navigator.pop(context, course);
+  }
+
   _updatePar(int hole) async {
     final result = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => EnterNumberPage(title: "Enter par", buttonName: "Update par")));
-    if(result != null){
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                EnterNumberPage(title: "Enter par", buttonName: "Update par")));
+    if (result != null) {
       setState(() {
         course.updateHole(hole, int.parse(result[0]));
       });
@@ -216,41 +288,40 @@ class _CreateNewCoursePageState extends State<CreateNewCoursePage> {
   _changeName() {
     Alert(
       context: context,
-        title: "Change name",
-        content: Padding(
-          padding: EdgeInsets.only(bottom: 18.0),
-          child: Column(
-            children: <Widget>[
-              TextField(
+      title: "Change name",
+      content: Padding(
+        padding: EdgeInsets.only(bottom: 18.0),
+        child: Column(
+          children: <Widget>[
+            TextField(
                 controller: controller,
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.flag),
-                    labelText: 'Course name',
-                  )
-              ),
-              Row(
-                children: <Widget>[
-                  FlatButton(
-                    onPressed: () {
-                      courseName = controller.text;
-                      controller.clear();
-                      Navigator.pop(context);
-                    },
-                    child: Text("Ok"),
-                  ),
-                  Spacer(),
-                  FlatButton(
-                    onPressed: () {
-                      controller.clear();
-                      Navigator.pop(context);
-                    },
-                    child: Text("Cancel"),
-                  )
-                ],
-              )
-            ],
-          ),
+                decoration: InputDecoration(
+                  icon: Icon(Icons.flag),
+                  labelText: 'Course name',
+                )),
+            Row(
+              children: <Widget>[
+                FlatButton(
+                  onPressed: () {
+                    courseName = controller.text;
+                    controller.clear();
+                    Navigator.pop(context);
+                  },
+                  child: Text("Ok"),
+                ),
+                Spacer(),
+                FlatButton(
+                  onPressed: () {
+                    controller.clear();
+                    Navigator.pop(context);
+                  },
+                  child: Text("Cancel"),
+                )
+              ],
+            )
+          ],
         ),
+      ),
     ).show();
   }
 }

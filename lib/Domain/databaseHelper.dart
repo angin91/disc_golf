@@ -383,6 +383,13 @@ class DatabaseHelper {
         where: "id = ?", whereArgs: [score.id]);
   }
 
+  Future<void> updateCourse(Course course) async {
+    Database db = await database;
+
+    await db.update(tableCourse, course.toMap(),
+        where: "id = ?", whereArgs: [course.id]);
+  }
+
   Future<Score> getScoreFromPlayerAndGame(int playerId, int gameId) async {
     Database db = await database;
     List<Map> maps = await db.query(tableGamePlayerScore,

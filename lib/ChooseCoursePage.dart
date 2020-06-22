@@ -22,6 +22,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage>
     super.initState();
     _getCourses().then((courseList) {
       setState(() {
+        courseList.sort();
         courses = courseList;
       });
     });
@@ -33,9 +34,16 @@ class _ChooseCoursePageState extends State<ChooseCoursePage>
     final double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
+            actions: <Widget>[
+              selected != null ? IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () => _showUpdateCourse(context, selected),
+              ) : Container(),
+            ],
             iconTheme: IconThemeData(color: Colors.black),
             elevation: 0.0,
-            title: Text("Choose course", style: TextStyle(fontFamily: "Inter",color: Colors.black)),
+            title: Text("Choose course",
+                style: TextStyle(fontFamily: "Inter", color: Colors.black)),
             backgroundColor: Colors.white),
         backgroundColor: Colors.white,
         body: (courses == null || courses.length == 0)
@@ -48,7 +56,10 @@ class _ChooseCoursePageState extends State<ChooseCoursePage>
           backgroundColor: Color(0xFF43991C),
           label: Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-            child: Text("Next", style: TextStyle(fontFamily: "Inter",)),
+            child: Text("Next",
+                style: TextStyle(
+                  fontFamily: "Inter",
+                )),
           ),
         ));
   }
@@ -81,7 +92,8 @@ class _ChooseCoursePageState extends State<ChooseCoursePage>
               child: Center(
                 child: Text(
                   "+ Add first course",
-                  style: TextStyle(fontFamily: "Inter", color: const Color(0xFF43991C)),
+                  style: TextStyle(
+                      fontFamily: "Inter", color: const Color(0xFF43991C)),
                 ),
               )),
         ),
@@ -139,7 +151,10 @@ class _ChooseCoursePageState extends State<ChooseCoursePage>
                             ),
                             Text(
                               courses[index].name,
-                              style: TextStyle(fontFamily: "Inter", color: Colors.black, fontSize: 20),
+                              style: TextStyle(
+                                  fontFamily: "Inter",
+                                  color: Colors.black,
+                                  fontSize: 20),
                               textAlign: TextAlign.left,
                             ),
                             Spacer(),
@@ -181,7 +196,8 @@ class _ChooseCoursePageState extends State<ChooseCoursePage>
               onTap: () => _showAddCourse(context),
               child: Text(
                 "+ Add more courses",
-                style: TextStyle(fontFamily: "Inter", color: const Color(0xFF43991C)),
+                style: TextStyle(
+                    fontFamily: "Inter", color: const Color(0xFF43991C)),
               )),
         ),
       ],
@@ -194,10 +210,28 @@ class _ChooseCoursePageState extends State<ChooseCoursePage>
   }
 
   _showAddCourse(BuildContext context) async {
-    final result = await Navigator.push(context, MaterialPageRoute(builder: (context) => CreateNewCoursePage()));
-    if(result != null){
+    final result = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => CreateNewCoursePage()));
+    if (result != null) {
       setState(() {
         courses.add(result);
+        courses.sort();
+      });
+    }
+  }
+
+  _showUpdateCourse(BuildContext context, Course course) async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => CreateNewCoursePage(
+                  course: course,
+                )));
+    if (result != null) {
+      setState(() {
+        courses.remove(course);
+        courses.add(result);
+        courses.sort();
       });
     }
   }
@@ -209,9 +243,13 @@ class _ChooseCoursePageState extends State<ChooseCoursePage>
   }
 
   _choosePlayer(BuildContext context) {
-    if(selected != null){
+    if (selected != null) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ChoosePlayerPage(course: selected,)));
+          context,
+          MaterialPageRoute(
+              builder: (context) => ChoosePlayerPage(
+                    course: selected,
+                  )));
     }
   }
 
