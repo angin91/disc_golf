@@ -255,6 +255,7 @@ class _HistoryPageState extends State<HistoryPage> {
       setState(() {
         games = gameMap;
       });
+      _changeSortValue(isSorted);
     }
   }
 
@@ -283,7 +284,7 @@ class _HistoryPageState extends State<HistoryPage> {
   _changeSortValue(value) {
 
     setState(() {
-      isSorted = !isSorted;
+      isSorted = value;
     });
 
     if(value){
